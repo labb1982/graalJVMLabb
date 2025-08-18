@@ -1,4 +1,4 @@
-package com.graalVM.GraalVMArt
+package com.graalVM.graalVMArt
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

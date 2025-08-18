@@ -1,4 +1,4 @@
-package com.graalVM.GraalVMArt
+package com.graalVM
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,4 +1,4 @@
-package com.graalVM.GraalVMArt;
+package com.graalVM;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

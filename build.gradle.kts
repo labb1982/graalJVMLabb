@@ -18,6 +18,9 @@ java {
 		languageVersion = JavaLanguageVersion.of(JAVA_VERSION)
 	}
 }
+kotlin {
+    jvmToolchain(JAVA_VERSION)
+}
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
     imageName.set("labbdocker/graalvmlabb")

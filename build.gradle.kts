@@ -12,7 +12,7 @@ group = "com.graalVM"
 version = "0.0.1-SNAPSHOT"
 description = "Demo project for Spring Boot"
 
-val JAVA_VERSION = 21
+val JAVA_VERSION = 25
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(JAVA_VERSION)

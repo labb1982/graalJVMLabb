@@ -4,7 +4,7 @@ FROM ghcr.io/graalvm/graalvm-community:25 AS builder
 
 WORKDIR /app
 
-RUN gu install native-image
+# RUN gu install native-image
 
 COPY . .
 

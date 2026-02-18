@@ -33,6 +33,14 @@ tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("boot
     )
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(
+            org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+        )
+    }
+}
+
 repositories {
 	mavenCentral()
 }

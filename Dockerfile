@@ -12,11 +12,13 @@ RUN chmod +x gradlew
 
 # Build native executable
 
-RUN ./gradlew nativeCompile --no-daemon -x test
+#--no-daemon
+
+RUN ./gradlew nativeCompile -Dorg.gradle.jvmargs="-Xmx3g"  -x test
  
 # ----------- Runtime Stage -----------
 
-FROM alpine:3.19
+FROM alpine:3.23.3
 
 WORKDIR /app
 

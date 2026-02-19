@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: graalvm25-spring-boot-gradle9-qa
-  DOCKERHUB_REPO: https://hub.docker.com/r/labbdocker/graalvmlabb
+  DOCKERHUB_REPO: https://hub.docker.com/r/labbdocker
 
 jobs:
   build:

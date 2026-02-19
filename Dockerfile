@@ -34,7 +34,7 @@ RUN apk add --no-cache \
 # Copy native binary (adjust name if required)
 
 COPY --from=builder /app/build/native/nativeCompile/* /app/appExe
-ls -ltr /app/build/native/nativeCompile/
+RUN ls -ltr /app/build/native/nativeCompile/
 # Create non-root user
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

@@ -36,10 +36,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
  
-      # 🔹 Login to ECR
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
- 
       # 🔹 Enable BuildKit (better performance)
       - name: Enable Docker BuildKit
         run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
@@ -49,6 +45,10 @@ jobs:
         run: |
           docker build \
             -t $IMAGE_NAME:$IMAGE_TAG .
+
+      # 🔹 Login to ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
  
       # 🔹 Tag and Push to ECR
       - name: Push Image to ECR

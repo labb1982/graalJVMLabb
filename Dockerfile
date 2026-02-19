@@ -15,6 +15,11 @@ RUN chmod +x gradlew
 #--no-daemon
 
 RUN ./gradlew nativeCompile -Dorg.gradle.jvmargs="-Xmx3g"  -x test
+
+RUN ls -ltr /app || true
+RUN ls -ltr /app/build || true
+RUN ls -ltr /app/build/native || true
+
  
 # ----------- Runtime Stage -----------
 
@@ -34,7 +39,7 @@ RUN apk add --no-cache \
 # Copy native binary (adjust name if required)
 
 COPY --from=builder /app/build/native/nativeCompile/* /app/appExe
-RUN ls -ltr /app/build/native/nativeCompile/
+
 # Create non-root user
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

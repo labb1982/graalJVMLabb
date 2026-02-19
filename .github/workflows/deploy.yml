@@ -1,0 +1,58 @@
+name: Build and Push GraalVM Native Image
+ 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+ 
+env:
+  AWS_REGION: ap-south-1
+  AWS_ACCOUNT_ID: 367026851053
+  ECR_REPOSITORY: rsiebank
+  IMAGE_NAME: graalvm25-spring-boot-gradle9-qa
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      # 🔹 Checkout Code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+ 
+      # 🔹 Generate ddmmyy.sequence tag
+      - name: Generate Image Tag
+        run: |
+          DATE=$(date +"%d%m%y")
+          SEQ=$(date +"%H%M%S")
+          echo "IMAGE_TAG=$DATE.$SEQ" >> $GITHUB_ENV
+ 
+      # 🔹 Configure AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+ 
+      # 🔹 Login to ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+ 
+      # 🔹 Enable BuildKit (better performance)
+      - name: Enable Docker BuildKit
+        run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
+ 
+      # 🔹 Build Docker Image
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t $IMAGE_NAME:$IMAGE_TAG .
+ 
+      # 🔹 Tag and Push to ECR
+      - name: Push Image to ECR
+        run: |
+          ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}
+          docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_URI:$IMAGE_NAME-$IMAGE_TAG
+          docker push $ECR_URI:$IMAGE_NAME-$IMAGE_TAG

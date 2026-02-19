@@ -1,55 +1,53 @@
 name: Build and Push GraalVM Native Image
- 
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
- 
+
 env:
   IMAGE_NAME: graalvm25-spring-boot-gradle9-qa
   DOCKERHUB_REPO: https://hub.docker.com/r/labbdocker/graalvmlabb
- 
+
 jobs:
   build:
     runs-on: ubuntu-latest
- 
+    
     steps:
-      # 🔹 Checkout Code
+      #  Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v4
- 
-      # 🔹 Generate ddmmyy.sequence tag
+      
+      #  Generate ddmmyy.sequence tag
       - name: Generate Image Tag
         run: |
           DATE=$(date +"%d%m%y")
           SEQ=$(date +"%H%M%S")
           echo "IMAGE_TAG=$DATE.$SEQ" >> $GITHUB_ENV
- 
- 
-      # 🔹 Enable BuildKit (better performance)
+      
+      
+      #  Enable BuildKit (better performance)
       - name: Enable Docker BuildKit
         run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
- 
-      # 🔹 Build Docker Image
+      
+      #  Build Docker Image
       - name: Build Docker Image
         run: |
-          docker build \
-            -t $IMAGE_NAME:$IMAGE_TAG .
-			
-			
-	  # 🔹 Login to Docker Hub
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      
+      
+      #  Login to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: labbdocker
           password: d0ckerHub_2o2%
-
- 
-		  
-      # 🔹 Tag and Push
+      
+      
+      
+      #  Tag and Push
       - name: Push to Docker Hub
         run: |
           docker tag $IMAGE_NAME:$IMAGE_TAG $DOCKERHUB_REPO:$IMAGE_NAME-$IMAGE_TAG
           docker push $DOCKERHUB_REPO:$IMAGE_NAME-$IMAGE_TAG
-		  
